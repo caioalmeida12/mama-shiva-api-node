@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "build",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "files": [
+    "src/app.ts", "./src/controller/EnderecoController.1.ts", "./src/routes/enderecoRouter.1.ts"
+  ],
+  "include": [
+    "src/app.ts",
+    "src/**/*.ts",
+    // ... other file patterns ...
+  ]
+}

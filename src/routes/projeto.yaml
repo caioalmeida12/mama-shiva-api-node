@@ -1,0 +1,646 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ARAUJOCAIO08/mama-shiva-python/1.0.0
+info:
+  version: "1.0.0"
+  title: mama-shiva-api
+  description: API para o site Mama Shiva
+paths:
+  /usuario/:
+    get:
+      tags:
+        - usuario
+      summary: Listar todos os usuários
+      operationId: findAllUsuario
+      security:
+        - SessionCookieAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/usuario"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      
+    post:
+      tags:
+        - usuario
+      summary: Criar um usuário
+      operationId: createUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/usuario_partial"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usuario"
+        "400":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+
+
+  /usuario/{usuario_id}:
+    get:
+      tags:
+        - usuario
+      summary: Buscar um usuário
+      operationId: findOneUsuario
+      security:
+        - SessionCookieAuth: []
+      parameters:
+        - name: usuario_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usuario"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+
+    put:
+      tags:
+        - usuario
+      summary: Atualizar um usuário
+      operationId: updateUsuario
+      security:
+        - SessionCookieAuth: []
+      parameters:
+        - name: usuario_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/usuario_partial"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usuario"
+        "400":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+
+    delete:
+      tags:
+        - usuario
+      summary: Deletar um usuário
+      operationId: deleteUsuario
+      security:
+        - SessionCookieAuth: []
+      parameters:
+        - name: usuario_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: OK
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+    
+  /usuario/authenticate/:
+    post:
+      tags:
+        - usuario
+      summary: Autenticar um usuário
+      operationId: authenticateUsuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - usuario_email
+                - usuario_senha
+              properties:
+                usuario_email:
+                  type: string
+                  format: email
+                  maxLength: 128
+                  minLength: 6
+                usuario_senha:
+                  type: string
+                  maxLength: 256
+                  minLength: 8
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usuario"
+        "400":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mensagem_erro"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+  /prato/:
+    get:
+      tags:
+        - prato
+      summary: Listar todos os pratos
+      operationId: findAllPrato
+      security:
+        - SessionCookieAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/prato'
+
+    post:
+      tags:
+        - prato
+      summary: Criar um prato
+      operationId: createPrato
+      security:
+        - SessionCookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/prato_partial'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/prato'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mensagem_erro'
+      
+  /prato/{prato_id}:
+    get:
+      tags:
+        - prato
+      summary: Buscar um prato
+      operationId: findOnePrato
+      security:
+        - SessionCookieAuth: []
+      parameters:
+        - name: prato_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/prato'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Prato não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mensagem_erro'
+
+  /duvida:
+    get:
+      tags:
+        - duvida
+      summary: Listar todas as dúvidas
+      operationId: findAllDuvida
+      security:
+        - SessionCookieAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/duvida'
+
+    post:
+      tags:
+        - duvida
+      summary: Criar uma dúvida
+      operationId: createDuvida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/duvida_partial'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/duvida'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mensagem_erro'
+
+  /duvida/{duvida_id}:
+    get:
+      tags:
+        - duvida
+      summary: Buscar uma dúvida
+      operationId: findOneDuvida
+      security:
+        - SessionCookieAuth: []
+      parameters:
+        - name: duvida_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/duvida'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Dúvida não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mensagem_erro'
+
+  /endereco/:
+    get:
+      tags:
+        - endereco
+      summary: Listar todos os endereços
+      operationId: findAllEndereco
+      security:
+        - SessionCookieAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/endereco'
+
+    post:
+      tags:
+        - endereco
+      summary: Criar um endereço
+      operationId: createEndereco
+      security:
+        - SessionCookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/endereco_partial'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/endereco'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mensagem_erro'
+
+  /endereco/{endereco_id}:
+    get:
+      tags:
+        - endereco
+      summary: Buscar um endereço
+      operationId: findOneEndereco
+      security:
+        - SessionCookieAuth: []
+      parameters:
+        - name: endereco_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/endereco'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Endereço não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mensagem_erro'
+
+components:     
+  schemas:
+    endereco_partial:
+      type: object
+      required:
+        - endereco_rua
+        - endereco_numero
+        - endereco_bairro
+        - endereco_cidade
+        - endereco_estado
+        - fk_usuario_id
+      properties:
+        endereco_id:
+          type: string
+          format: uuid
+        endereco_rua:
+          type: string
+          maxLength: 128
+          minLength: 3
+        endereco_numero:
+          type: integer
+          minimum: 1
+        endereco_bairro:
+          type: string
+          maxLength: 32
+          minLength: 3
+        endereco_cidade:
+          type: string
+          maxLength: 64
+          minLength: 3
+        endereco_estado:
+          type: string
+          maxLength: 64
+          minLength: 3
+        fk_usuario_id:
+          type: string
+          format: uuid
+    
+    endereco:
+      allOf:
+        - $ref: '#/components/schemas/endereco_partial'
+      required:
+        - endereco_id
+      properties:
+        endereco_id:
+          type: string
+          format: uuid
+    
+    prato_partial:
+      type: object
+      required:
+        - prato_nome
+        - prato_categoria
+        - prato_descricao
+      properties:
+        prato_id:
+          type: string
+          format: uuid
+        prato_nome:
+          type: string
+          maxLength: 128
+          minLength: 3
+        prato_categoria:
+          type: string
+          enum:
+            - ENTRADA
+            - PRINCIPAL
+            - BEBIDA
+            - SOBREMESA
+        prato_descricao:
+          type: string
+          maxLength: 256
+          minLength: 3
+
+    prato:
+      allOf:
+        - $ref: '#/components/schemas/prato_partial'
+      required:
+        - prato_id
+      properties:
+        prato_id:
+          type: string
+          format: uuid
+
+    usuario_partial:
+      type: object
+      required:
+        - usuario_cpf
+        - usuario_nome
+        - usuario_email
+        - usuario_senha
+        - usuario_telefone
+      properties:
+        usuario_id:
+          type: string
+          format: uuid
+        usuario_cpf:
+          type: string
+          maxLength: 11
+          minLength: 11
+          example: '12345678901'
+        usuario_nome:
+          type: string
+          maxLength: 128
+          minLength: 3
+        usuario_email:
+          type: string
+          maxLength: 128
+          minLength: 6
+        usuario_senha:
+          type: string
+          maxLength: 256
+          minLength: 6
+        usuario_telefone:
+          type: string
+          maxLength: 11
+          minLength: 10
+          example: '1234567890'
+    
+    usuario:
+      allOf:
+        - $ref: '#/components/schemas/usuario_partial'
+      required:
+        - usuario_id
+      properties:
+        usuario_id:
+          type: string
+          format: uuid
+
+    reserva_partial:
+      type: object
+      required:
+        - reserva_data
+        - reserva_horario
+        - fk_usuario_id
+      properties:
+        reserva_data:
+          type: string
+          format: date
+        reserva_horario:
+          type: string
+          enum:
+            - 07:00
+            - 08:00
+            - 09:00
+            - 10:00
+            - 11:00
+            - 12:00
+            - 13:00
+            - 14:00
+            - 15:00
+            - 16:00
+            - 17:00
+        fk_usuario_id:
+          type: string
+          format: uuid
+
+    reserva:
+      allOf:
+        - $ref: '#/components/schemas/reserva_partial'
+      required:
+        - reserva_id
+      properties:
+        reserva_id:
+          type: string
+          format: uuid
+
+    duvida_partial:
+      type: object
+      required:
+        - duvida_assunto
+        - duvida_mensagem
+        - fk_usuario_id
+      properties:
+        duvida_id:
+          type: string
+          format: uuid
+        duvida_assunto:
+          type: string
+          maxLength: 128
+          minLength: 3
+        duvida_mensagem:
+          type: string
+          maxLength: 1024
+          minLength: 64
+        fk_usuario_id:
+          type: string
+          format: uuid
+
+    duvida:
+      allOf:
+        - $ref: '#/components/schemas/duvida_partial'
+      required:
+        - duvida_id
+      properties:
+        duvida_id:
+          type: string
+          format: uuid
+
+    mensagem_erro:
+      type: object
+      required:
+        - mensagem_erro
+      properties:
+        message:
+          type: string
+          maxLength: 256
+          minLength: 3
+          example: 'Erro ao realizar a operação'
+
+  securitySchemes:
+    SessionCookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+      description: Session cookie
+
+  responses:
+    UnauthorizedError:
+      description: Token de acesso inválido ou não informado
+      headers:
+        Authenticate:
+          schema:
+            $ref: "#/components/schemas/mensagem_erro"
+          description: Session cookie
